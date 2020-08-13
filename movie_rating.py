@@ -33,7 +33,7 @@ join_df = ratings_df.join(movies_df,ratings_df.movie_id == movies_df.movie_id).s
 join_df.cache().createOrReplaceTempView("movie_genre_rating")
 
 # running sql on table created in above step to find the most popular genre year by year in the past decade
-op_df = sqlcontext.sql("select rating_year,genre_split as most_popular_genre from (select *,dense_rank() over(partition by rating_year order by rating_sum desc) as rn from (select rating_year,genre_split,sum(rating) as rating_sum from movie_genre_rating where rating_year >=2010 group by rating_year,genre_split)a)b where rn=1")
+op_df = sqlcontext.sql("select rating_year,genre_split as most_popular_genre from (select *,dense_rank() over(partition by rating_year order by rating_sum desc) as rn from (select rating_year,genre_split,sum(rating) as rating_sum from movie_genre_rating where rating_year <=2010 group by rating_year,genre_split)a)b where rn=1")
 
 op_df.orderBy("rating_year").show()
 
