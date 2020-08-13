@@ -21,7 +21,7 @@ users_rdd = sc.textFile(users_file_location)
 users_df=users_rdd.map(lambda k: k.split("::")).toDF(['user_id','twitter_id'])
 users_df.cache().createOrReplaceTempView("users")
 
-movies_rdd = sc.textFile(items_file_location)
+movies_rdd = sc.textFile(movies_file_location)
 movies_df=movies_rdd.map(lambda k: k.split("::")).toDF(['movie_id','movie_title','genre'])
 
 ratings_rdd = sc.textFile(ratings_file_location)
