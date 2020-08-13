@@ -1,5 +1,5 @@
 # This pyspark program stages 3 datasets . Joins datasets and evaluated the highest rated genres for every year available in the past decade (2000 -2010)
-#Following assumptions were made reagrding the data
+#Following assumptions were made regarding the data
 #    1.Movie records are unique in the dataset
 #    2. If the movie has multiple genres, then rating is applicable for all the genres to which movie belongs 
 #    3. Business logic used to caluating the highest rating is based on summing all the ratings by genre and selecting the max value for a given year
