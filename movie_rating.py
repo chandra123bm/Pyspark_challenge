@@ -1,7 +1,7 @@
 # This pyspark program stages 3 datasets . Joins datasets and evaluated the highest rated genres for every year available in the past decade (2000 -2010)
 #Following assumptions were made regarding the data
 #    1.Movie records are unique in the dataset
-#    2. If the movie has multiple genres, then rating is applicable for all the genres to which movie belongs 
+#    2. If the movie has multiple genres, then rating is applicable for all the genres to which movie belongs
 #    3. Business logic used to caluating the highest rating is based on summing all the ratings by genre and selecting the max value for a given year
 #    4. WeI have considred rating year for calculation by deriving from rating timestamp not the movie release year from movie title
 
@@ -12,6 +12,7 @@ from pyspark.sql.functions import from_unixtime, unix_timestamp
 sqlcontext = SQLContext(sc)
 
 # File location for data source files
+#these are from databricks
 users_file_location = "dbfs:/FileStore/tables/users_dat.txt"
 movies_file_location = "dbfs:/FileStore/tables/movies_dat.txt"
 ratings_file_location = "dbfs:/FileStore/tables/ratings_dat.txt"
@@ -36,4 +37,3 @@ join_df.cache().createOrReplaceTempView("movie_genre_rating")
 op_df = sqlcontext.sql("select rating_year,genre_split as most_popular_genre from (select *,dense_rank() over(partition by rating_year order by rating_sum desc) as rn from (select rating_year,genre_split,sum(rating) as rating_sum from movie_genre_rating where rating_year >=2010 group by rating_year,genre_split)a)b where rn=1")
 
 op_df.orderBy("rating_year").show()
-
